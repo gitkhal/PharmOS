@@ -4,6 +4,7 @@ PharmOS is a desktop-first pharmacy management system designed for small communi
 The project prioritizes a small number of reliable, well-executed workflows rather than a large set of partially implemented features.
 
  1. Core Features
+
 1.1 Inventory and Expiry Control
   - Track medicines, quantities, batches, and expiry dates
   - Low-stock thresholds and alerts
