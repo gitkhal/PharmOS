@@ -1,0 +1,94 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+<h2>Dashboard</h2>
+
+<div class="cards">
+
+<div class="card">
+    <h3>Medicines</h3>
+    <p>{{ medicine_count }}</p>
+</div>
+
+<div class="card">
+    <h3>Low Stock</h3>
+    <p>{{ low_stock|length }}</p>
+    <a href="/inventory/?filter=low">View</a>
+</div>
+
+<div class="card">
+    <h3>Near Expiry</h3>
+    <p>{{ near_expiry|length }}</p>
+    <a href="/inventory/?filter=expiry">View</a>
+</div>
+
+</div>
+
+<h3>Low Stock</h3>
+
+<table>
+<tr>
+    <th>Medicine</th>
+    <th>Quantity</th>
+    <th>Threshold</th>
+</tr>
+
+{% for medicine in low_stock %}
+<tr>
+    <td>{{ medicine.name }}</td>
+    <td class="critical">{{ medicine.quantity }}</td>
+    <td>{{ medicine.low_stock_threshold }}</td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="3">No low-stock medicines.</td>
+</tr>
+{% endfor %}
+</table>
+
+<h3>Near Expiry</h3>
+
+<table>
+<tr>
+    <th>Medicine</th>
+    <th>Batch</th>
+    <th>Expiry</th>
+</tr>
+
+{% for medicine in near_expiry %}
+<tr>
+    <td>{{ medicine.name }}</td>
+    <td>{{ medicine.batch_number }}</td>
+    <td class="warning">{{ medicine.expiry_date }}</td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="3">No medicines near expiry.</td>
+</tr>
+{% endfor %}
+</table>
+
+<h3>Recent Sales</h3>
+
+<table>
+<tr>
+    <th>Sale</th>
+    <th>Date</th>
+    <th>Total</th>
+</tr>
+
+{% for sale in recent_sales %}
+<tr>
+    <td>#{{ sale.id }}</td>
+    <td>{{ sale.created_at }}</td>
+    <td>${{ sale.total }}</td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="3">No sales yet.</td>
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}

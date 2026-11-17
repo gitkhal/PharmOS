@@ -1,0 +1,99 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+    <h2>Inventory</h2>
+
+    <a class="button" href="/inventory/add/">
+        + Add Medicine
+    </a>
+</div>
+
+<div class="panel">
+
+    <div class="toolbar">
+
+        <form method="get" style="margin:0; display:flex; gap:8px;">
+
+            <input
+                class="search-box"
+                name="q"
+                value="{{ query }}"
+                placeholder="Search medicine, barcode, or batch..."
+            >
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+    </div>
+
+    <div class="filter-row">
+
+        <a class="filter-chip" href="/inventory/">
+            All
+        </a>
+
+        <a class="filter-chip" href="/inventory/?filter=low">
+            Low Stock
+        </a>
+
+        <a class="filter-chip" href="/inventory/?filter=expiry">
+            Near Expiry
+        </a>
+
+    </div>
+
+</div>
+
+<table>
+
+<tr>
+    <th>Name</th>
+    <th>Barcode</th>
+    <th>Qty</th>
+    <th>Price</th>
+    <th>Batch</th>
+    <th>Expiry</th>
+    <th>Status</th>
+</tr>
+
+{% for medicine in medicines %}
+
+<tr>
+
+    <td><strong>{{ medicine.name }}</strong></td>
+    <td>{{ medicine.barcode }}</td>
+    <td>{{ medicine.quantity }}</td>
+    <td>${{ medicine.price }}</td>
+    <td>{{ medicine.batch_number }}</td>
+    <td>{{ medicine.expiry_date }}</td>
+
+    <td>
+        {% if medicine.is_low_stock %}
+            <span class="critical">Low stock</span>
+        {% endif %}
+
+        {% if medicine.is_near_expiry %}
+            <span class="warning">Near expiry</span>
+        {% endif %}
+    </td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+    <td colspan="7" class="empty-state">
+        No medicines found.
+    </td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

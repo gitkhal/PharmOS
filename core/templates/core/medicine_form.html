@@ -1,0 +1,48 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h2>Add Medicine</h2>
+
+        <p style="color:#64748b; margin:6px 0 0;">
+            Add a new product to pharmacy inventory.
+        </p>
+    </div>
+
+</div>
+
+<div class="panel form-card">
+
+    <div class="panel-title">
+        Medicine Details
+    </div>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="form-actions">
+
+            <button type="submit">
+                Add Medicine
+            </button>
+
+            <a
+                href="/inventory/"
+                class="button secondary-button"
+            >
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

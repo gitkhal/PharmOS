@@ -1,0 +1,161 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h2>Sales / POS</h2>
+
+        <p style="color:#64748b; margin:6px 0 0;">
+            Create and complete a pharmacy sale.
+        </p>
+    </div>
+
+</div>
+
+<div class="panel">
+
+    <div class="panel-title">
+        Add Product
+    </div>
+
+    <form method="post" style="margin:0;">
+
+        {% csrf_token %}
+
+        <div class="pos-search">
+
+            <input
+                name="search"
+                placeholder="Scan barcode or search medicine..."
+                required
+            >
+
+            <input
+                name="quantity"
+                type="number"
+                value="1"
+                min="1"
+                required
+            >
+
+            <button name="action" value="add">
+                + Add
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+<div class="panel">
+
+    <div class="panel-title">
+        Current Sale
+    </div>
+
+    <table>
+
+        <tr>
+            <th>Medicine</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+            <th></th>
+        </tr>
+
+        {% for row in cart_rows %}
+
+        <tr>
+
+            <td>
+                <strong>{{ row.medicine.name }}</strong>
+            </td>
+
+            <td>{{ row.quantity }}</td>
+            <td>${{ row.medicine.price }}</td>
+            <td><strong>${{ row.subtotal }}</strong></td>
+
+            <td>
+
+                <form method="post" style="margin:0;">
+
+                    {% csrf_token %}
+
+                    <input
+                        type="hidden"
+                        name="medicine_id"
+                        value="{{ row.medicine.id }}"
+                    >
+
+                    <button
+                        class="danger-button"
+                        name="action"
+                        value="remove"
+                    >
+                        Remove
+                    </button>
+
+                </form>
+
+            </td>
+
+        </tr>
+
+        {% empty %}
+
+        <tr>
+            <td colspan="5" class="empty-state">
+                No products added yet.
+            </td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    <div class="sale-total">
+
+        <div>
+            <span>SALE TOTAL</span><br>
+            <strong>${{ total }}</strong>
+        </div>
+
+        <form
+            method="post"
+            style="margin:0; display:flex; gap:8px;"
+        >
+
+            {% csrf_token %}
+
+            <button
+                class="secondary-button"
+                name="action"
+                value="clear"
+                type="submit"
+            >
+                Clear
+            </button>
+
+            <button
+                name="action"
+                value="complete"
+                type="submit"
+                style="
+                    background:white;
+                    color:#0f766e;
+                    box-shadow:none;
+                "
+            >
+                Complete Sale
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
